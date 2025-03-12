@@ -10,10 +10,15 @@ The College Management System is a comprehensive web application designed to str
 
 Key Features:
 Faculty Dashboard: Real-time updates on attendance, grades, schedules, and profile management.
+
 Student Module: Access to grades, attendance records, and academic profiles.
+
 Admin Panel: User management, course management, and comprehensive data analytics.
+
 Responsive UI: Optimized for desktops and mobile devices with a user-friendly interface.
+
 Real-Time Notifications: WebSocket integration for live updates on important announcements.
+
 
 Tech Stack:
 Frontend: React.js, Tailwind CSS, React Router.
