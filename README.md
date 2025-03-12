@@ -1,9 +1,9 @@
 # College Management System
 Designed By Compile Time Error
-(Avdhoot Chavan,
+ :Avdhoot Chavan,
 Jayesh Ingale,
 Devang Gandhi,
-Suha Karjatkar)
+Suha Karjatkar 
 
 Managing college data manually is time-consuming and prone to errors. Our system automates routine tasks, improves data accuracy, and enhances accessibility. It empowers faculty, students, and administrators to stay connected and organized.
 The College Management System is a comprehensive web application designed to streamline administrative and academic tasks for colleges and universities. Built using React.js, Tailwind CSS, Express.js, and Node.js, this system provides a modern and efficient solution for managing student and faculty data.
