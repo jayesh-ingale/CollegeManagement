@@ -1,5 +1,5 @@
 # College Management System
-Designed By Compile Time Error
+Designed By Team Compile Time Error
  :Avdhoot Chavan,
 Jayesh Ingale,
 Devang Gandhi,
