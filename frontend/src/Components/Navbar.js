@@ -1,6 +1,21 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 const Navbar = ({ toggleSidebar }) => {
+  const navigate = useNavigate(); // Hook for navigation
+
+  const handleLogout = () => {
+    // Clear session data or authentication token
+    localStorage.removeItem("authToken"); // If using localStorage to store the auth token
+    sessionStorage.removeItem("authToken"); // If using sessionStorage
+
+    // Optionally, clear any other data (e.g., user info)
+    localStorage.removeItem("user");
+
+    // Redirect to login page
+    navigate("/");
+  };
+
   return (
     <nav className="bg-gradient-to-r from-[#0F2027] to-[#2C5364] p-4 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center">
@@ -22,17 +37,13 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <ul className="hidden md:flex space-x-6 ml-auto">  
-          <li className="hover:text-gray-300 cursor-pointer"><i className="fa-solid fa-house"></i> Home</li>
-          <li className="hover:text-gray-300 cursor-pointer"><i className="fa-solid fa-users"></i> Students</li>
-          <li className="hover:text-gray-300 cursor-pointer"><i className="fa-solid fa-book"></i> Courses</li>
-        </ul>
-
         {/* Right Section - Profile & Logout */}
         <div className="flex items-center space-x-4 ml-6">
           <i className="fa-solid fa-user-circle text-2xl cursor-pointer"></i>
-          <button className="bg-red-500 hover:bg-red-700 px-3 py-1 rounded">
+          <button 
+            onClick={handleLogout} 
+            className="bg-red-500 hover:bg-red-700 px-3 py-1 rounded"
+          >
             <i className="fa-solid fa-right-from-bracket"></i> Logout
           </button>
         </div>

@@ -20,7 +20,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <h2 className="text-2xl font-semibold mb-6">Dashboard</h2>
         <ul className="space-y-4">
           <li className="hover:text-gray-300 cursor-pointer">
-            <Link to="/" onClick={toggleSidebar}>
+            <Link to="/dashboard" onClick={toggleSidebar}>
               <i className="fa-solid fa-chart-line mr-2"></i> Overview
             </Link>
           </li>

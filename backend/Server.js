@@ -1,24 +1,24 @@
+// server.js or app.js
+
 const express = require("express");
-const connectDB = require("./config/db");
+const mongoose = require("mongoose");
+const announcementRoutes = require("./Routes/AnnouncementRoutes");
 const cors = require("cors");
-require("dotenv").config();
-
 const app = express();
-connectDB(); // Connect to MongoDB
 
+// Middleware
 app.use(cors());
-app.use(express.json()); // Middleware to parse JSON
+app.use(express.json()); // To parse JSON bodies
+
+// Database Connection
+mongoose.connect("mongodb://localhost:27017/collegeDB", { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
 // Routes
-const studentRoutes = require("./Routes/StudentRoutes");
-const authRoutes = require("./Routes/AuthRoutes");
+app.use("/api/announcements", announcementRoutes);
 
-app.use("/api/students", studentRoutes);
-app.use("/api/auth", authRoutes); // ✅ Add authentication route
-
-app.get("/", (req, res) => {
-  res.send("College Management Backend Running...");
+// Start server
+app.listen(5000, () => {
+  console.log("Server running on http://localhost:5000");
 });
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
