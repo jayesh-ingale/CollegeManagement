@@ -12,7 +12,6 @@ Key Features:
 Faculty Dashboard: Real-time updates on attendance, grades, schedules, and profile management.
 Student Module: Access to grades, attendance records, and academic profiles.
 Admin Panel: User management, course management, and comprehensive data analytics.
-Authentication: Secure login using JWT to protect user data.
 Responsive UI: Optimized for desktops and mobile devices with a user-friendly interface.
 Real-Time Notifications: WebSocket integration for live updates on important announcements.
 
