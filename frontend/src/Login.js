@@ -1,102 +1,140 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [name, setName] = useState("");
-  const [id, setId] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Using useNavigate
 
-  const handleLogin = () => {
-    // Simple Validation
-    if (!name || !id || !password) {
-      setError("All fields are required!");
-      return;
-    }
+  const navigate = useNavigate();
 
-    // Here, you can call an API to validate the user credentials
-    // For now, let's assume the login is successful if fields are filled
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setError("");
 
-    // Conditional check to determine if user is a student or faculty
-    if (id.startsWith("S")) {
-      // Redirect to Student Dashboard
-      navigate("/dashboard");
-    } else if (id.startsWith("F")) {
-      // Redirect to Faculty Dashboard
-      navigate("/faculty-dashboard");
-    } else {
-      setError("Invalid ID format");
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Invalid credentials");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("name", data.name);
+
+      if (data.role === "student") {
+        navigate("/dashboard");
+      } else if (data.role === "faculty") {
+        navigate("/faculty-dashboard");
+      } else {
+        setError("Invalid role. Contact admin.");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      setError("Server error. Please try again.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-[#0F2027] to-[#2C5364]">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-gray-700">Welcome Back!</h2>
-        <p className="text-center text-gray-500">Please log in to continue</p>
+    <div style={styles.loginContainer}>
+      {/* 🏫 Welcome Heading */}
+      <h1 style={styles.welcomeHeading}>Welcome to College Management System</h1>
 
-        {error && <div className="text-red-500 text-center">{error}</div>}
-
-        <form className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-gray-700">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-400"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="id" className="block text-gray-700">Student/Faculty ID</label>
-            <input
-              type="text"
-              id="id"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-400"
-              placeholder="Enter your ID"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              id="password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-400"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={handleLogin}
-            className="w-full p-3 mt-4 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition duration-300"
-          >
-            Log In
-          </button>
-
-          <div className="flex items-center justify-between mt-4">
-            <label className="flex items-center text-sm text-gray-600">
-              <input type="checkbox" className="mr-2" />
-              Remember Me
-            </label>
-            <a href="#" className="text-sm text-teal-500 hover:text-teal-600">Forgot Password?</a>
-          </div>
-
-        
+      <div style={styles.loginBox}>
+        <h2 style={styles.heading}>Sign In</h2>
+        {error && <p style={styles.errorMessage}>{error}</p>}
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="User ID"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <button type="submit" style={styles.button}>Login</button>
         </form>
       </div>
     </div>
   );
+};
+
+// ✅ **Dark Blue to Green Gradient UI with Dark Blue Login Button**
+const styles = {
+  loginContainer: {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column", // 🏫 Stacks Welcome Heading on top
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(135deg, #1E3A8A, #22C55E)", // **Dark Blue to Green Gradient 🎨**
+  },
+  welcomeHeading: {
+    color: "white",
+    fontSize: "28px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+    textAlign: "center",
+    textShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
+  },
+  loginBox: {
+    background: "rgba(255, 255, 255, 0.15)", // **Glassmorphism Effect**
+    backdropFilter: "blur(15px)",
+    padding: "40px",
+    borderRadius: "12px",
+    textAlign: "center",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+    width: "350px",
+  },
+  heading: {
+    color: "white",
+    fontSize: "24px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  input: {
+    width: "100%",
+    padding: "12px",
+    margin: "10px 0",
+    border: "none",
+    borderRadius: "6px",
+    fontSize: "16px",
+  },
+  button: {
+    width: "100%",
+    padding: "12px",
+    border: "none",
+    borderRadius: "6px",
+    background: "#1E40AF", // **Dark Blue Button**
+    color: "white",
+    fontSize: "18px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+  buttonHover: {
+    background: "#1E3A8A", // **Darker Blue on Hover**
+  },
+  errorMessage: {
+    color: "#FF4D4D",
+    fontWeight: "bold",
+  },
 };
 
 export default Login;

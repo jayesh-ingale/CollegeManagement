@@ -11,8 +11,12 @@ const Dashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Student Data (Can be fetched dynamically)
+  const studentName = localStorage.getItem("name") || "Student";
+  const studentProfilePic = "https://randomuser.me/api/portraits/men/31.jpg"; // Sample profile pic
+
   return (
-    <div className="relative min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-100">
       {/* Navbar with toggle functionality */}
       <Navbar toggleSidebar={toggleSidebar} />
 
@@ -21,14 +25,39 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className={`p-6 transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-16"}`}>
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome to the student dashboard.</p>
+        {/* Student Profile Section */}
+        <div className="flex items-center bg-gradient-to-r from-[#0072ff] to-[#00c6ff] text-white p-6 rounded-lg shadow-lg">
+          <img
+            src={studentProfilePic}
+            alt="Profile"
+            className="w-16 h-16 rounded-full border-2 border-white"
+          />
+          <div className="ml-4">
+            <h2 className="text-2xl font-bold">Welcome, {studentName}! 🎓</h2>
+            <p className="opacity-80 italic">"The future belongs to those who believe in the beauty of their dreams."</p>
+          </div>
+        </div>
 
         {/* Statistics Cards - Adjusted Left */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 w-[90%]">
-          <Card title="Total Students" value="1,200" icon="fa-users" />
-          <Card title="New Admissions" value="120" icon="fa-user-plus" />
-          <Card title="Courses Available" value="45" icon="fa-book" />
+          <Card
+            title="Total Students"
+            value="1,200"
+            icon="fa-users"
+            quote="Education is the key to unlocking the world."
+          />
+          <Card
+            title="New Admissions"
+            value="120"
+            icon="fa-user-plus"
+            quote="Knowledge is power, and you are on the path to greatness."
+          />
+          <Card
+            title="Courses Available"
+            value="45"
+            icon="fa-book"
+            quote="Every course you take is a step toward your dreams."
+          />
         </div>
       </div>
     </div>
